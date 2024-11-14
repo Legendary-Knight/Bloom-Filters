@@ -12,17 +12,27 @@
 using namespace std;
 
 HashMap::HashMap(bool Prime){
-	p=pow(2,31)-1;
-	hashTable= new int[p+1];
+	if(Prime){
+		p=pow(2,31)-1;
+		hashTable= new bool[p+1];
 
-	mt19937 mt(time(nullptr));
-	std::uniform_int_distribution<> uniform_distB(0, p-1);
-	std::uniform_int_distribution<> uniform_distA(1, p-1);			
+		mt19937 mt(time(nullptr));
+		std::uniform_int_distribution<> uniform_distB(0, p-1);
+		std::uniform_int_distribution<> uniform_distA(1, p-1);			
 
-	a=uniform_distA(mt);
-	b=uniform_distB(mt);
+		a=uniform_distA(mt);
+		b=uniform_distB(mt);
+	}
+	else{
+		
+	}
 
+	hashTable=new bool[m];
+	for(int i=0; i<m; i++){
+		hashTable[i]=false;
+	}
 }
-void HashMao::primeMap(int x){
+void HashMap::primeMap(int x){
 	int h=(((a*x)+b)%(p))%(m);
+	hashTable[h]=true;
 }
