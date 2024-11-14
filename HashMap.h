@@ -6,8 +6,14 @@
 #include <cmath>
 #include <unordered_map> 
 
-class primeHash {
+class HashMap {
 	public:
-		primeHash();
+		HashMap(bool Prime);
+		void primeMap(int val);
 	private:
+		int a;
+		int b;
+		int m;
+		int p;
+		int* hashTable;
 };
