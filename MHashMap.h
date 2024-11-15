@@ -18,7 +18,8 @@ class MHashMap {
 		int N;
 		//n is 100,000
 		int n;
-		// c and k are 10,000
+		// c  will range from 5-10
+		//k will range from 3-7
 		int c;
 		int k;
 

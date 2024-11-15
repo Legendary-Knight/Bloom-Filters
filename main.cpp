@@ -17,10 +17,11 @@ int main(){
 	int N=(pow(2,31))-2;
 	//n is 100,000
 	int n=100000;
-	// c and k are 10,000
-	int c=10;
-	int k=10;
-	bool prime =true;
+	// c  will range from 5-10
+	//k will range from 3-7
+	int c=5;
+	int k=3;
+	bool prime =false;
 	cout << "running hash" <<endl;
 	MHashMap myHash(prime, N, n, c, k);
 	myHash.mapVal(10000);

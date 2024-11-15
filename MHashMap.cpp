@@ -24,11 +24,11 @@ MHashMap::MHashMap(bool Prime, int NI, int nI, int cI, int kI){
 	for(int i=0; i<m; i++){
 		hashTable[i]=false;
 	}
+	mt19937 mt(time(nullptr));
 	cout << "made hash table" <<endl;
 	if(Prime){
 		p=pow(2,31)-1;
 		cout << "Prime num is " << p << endl;
-		mt19937 mt(time(nullptr));
 		std::uniform_int_distribution<> uniform_distB(0, p-1);
 		std::uniform_int_distribution<> uniform_distA(1, p-1);			
 		for(int i=0; i<k; i++){
@@ -39,14 +39,17 @@ MHashMap::MHashMap(bool Prime, int NI, int nI, int cI, int kI){
 		}
 	}
 	else{
-		mt19937 mt(time(nullptr));
+		cout << "in non prime hash" << endl;
 		for(int i=0; i<k; i++){
-			SEED.push_back(mt());
+			int newSeed=mt();
+			cout << "new seed " << newSeed << endl;
+			SEED.push_back(newSeed);
 		}
 	}
 }
 
 void MHashMap::mapVal(int x){
+	cout << "mapping value " << x << endl;
 	if(prime){
 		for(int i=0; i<k; i++){
 			long sum=(((long)(a[i])*x)+b[i]);
@@ -57,8 +60,11 @@ void MHashMap::mapVal(int x){
 	}
 	else{
 		for(int i=0; i<k; i++){
-			std::mt19937 gen((SEED[i]+x));
-			int h=gen();
+			unsigned int combSeed=(SEED[i]+x);
+			cout << "combined seed " << combSeed << endl;
+			std::mt19937 gen(combSeed);
+			std::uniform_int_distribution<> uniform_distM(0, m-1);
+			int h=uniform_distM(gen);
 			hashTable[h]=true;
 		}
 	}
