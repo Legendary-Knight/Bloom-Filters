@@ -7,6 +7,7 @@
 #include <unordered_map> 
 #include <cmath>
 #include <random>
+#include <algorithm>
 
 #include "MHashMap.h"
 using namespace std;
@@ -46,28 +47,37 @@ int main(){
 	int n=500000;
 	// c  will range from 5-10
 	//k will range from 3-7
-	int c=5;
-	int k=3;
-	bool prime =false;
+	//int c=5;
+	//int k=3;
 
-	MHashMap myHash(prime, N, n, c, k);
-	for(int i=0; i<n; i++){
-		myHash.mapVal(i);
-	}
-	for(int )
-	mt19937 mt(time(nullptr));
-	std::uniform_int_distribution<> uniform_dist(n, N-1);
-	double fp=0;
-	double inserts=10000;
-	for(int i=0; i<inserts; i++){
-		if (myHash.contains(uniform_dist(mt))){
-			cout << "a false positive" << endl;
-			fp++;
+	//run twice and change from true to false
+	bool prime =true;
+	for(int c=5; c<=10; c++){
+		for(int k=3; k<=8; k++){
+			vector<double> fps;
+			for(int it=0; it<10; it++){
+				MHashMap myHash(prime, N, n, c, k);
+				for(int i=0; i<n; i++){
+					myHash.mapVal(i);
+				}
+				mt19937 mt(time(nullptr));
+				std::uniform_int_distribution<> uniform_dist(n, N-1);
+				double fp=0;
+				double inserts=10000;
+				for(int i=0; i<inserts; i++){
+					if (myHash.contains(uniform_dist(mt))){
+						//cout << "a false positive" << endl;
+						fp++;
+					}
+				}
+				double fpr=fp/inserts;
+				fps.push_back(fpr);
+				cout << "False positive rate is: " << fpr << " or " << fpr*100 << "%" << endl;
+			}
+			sort(fps.begin(), fps.end());
+			double medFp = (fps[4]+fps[5])/2;
+			cout<< "MEDIAN false positive rate is: " << medFp << " or " << medFp*100 << "%" << " for c value of: " << c << " and k of: " << k << endl;
 		}
 	}
-	double fpr=fp/inserts;
-	cout << "False positive rate is: " << fpr << " or " << fpr*100 << "%" << endl;
-
-
 	return 0;
 }
