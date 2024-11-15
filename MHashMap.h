@@ -17,7 +17,7 @@ class MHashMap {
 	private:
 		// N will be (2^31)-2
 		int N;
-		//n is 100,000
+		//n is 500,000
 		int n;
 		// c  will range from 5-10
 		//k will range from 3-7

@@ -43,7 +43,7 @@ int main(){
 
 	// N will be (2^31)-2
 	int N=(pow(2,31))-2;
-	//n is 100,000
+	//n is 500,000
 	int n=500000;
 	// c  will range from 5-10
 	//k will range from 3-7
@@ -51,6 +51,21 @@ int main(){
 	//int k=3;
 
 	//run twice and change from true to false
+/*
+	MHashMap myHash(true, N, n, 5, 3);
+	for(int i=0; i<50000; i++){
+		myHash.mapVal(i);
+	}
+	vector<double> fps;
+	int fp=0;
+	for(int i=0; i<100000; i++){
+		if (myHash.contains(i)){
+			cout << "contains " << i << endl;
+		}
+	}
+*/
+		
+	
 	bool prime =true;
 	for(int c=5; c<=10; c++){
 		for(int k=3; k<=8; k++){
@@ -60,7 +75,7 @@ int main(){
 				for(int i=0; i<n; i++){
 					myHash.mapVal(i);
 				}
-				mt19937 mt(time(nullptr));
+				mt19937 mt(time(nullptr)+(rand()*100000));
 				std::uniform_int_distribution<> uniform_dist(n, N-1);
 				double fp=0;
 				double inserts=10000;
@@ -79,5 +94,6 @@ int main(){
 			cout<< "MEDIAN false positive rate is: " << medFp << " or " << medFp*100 << "%" << " for c value of: " << c << " and k of: " << k << endl;
 		}
 	}
+	
 	return 0;
 }

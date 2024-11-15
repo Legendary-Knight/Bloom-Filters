@@ -24,7 +24,7 @@ MHashMap::MHashMap(bool Prime, int NI, int nI, int cI, int kI){
 	for(int i=0; i<m; i++){
 		hashTable[i]=false;
 	}
-	mt19937 mt(time(nullptr));
+	mt19937 mt(time(nullptr)+(rand()*100000));
 	//cout << "made hash table" <<endl;
 	if(Prime){
 		p=pow(2,31)-1;
