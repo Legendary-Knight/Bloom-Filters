@@ -1,28 +1,13 @@
-CXX=clang++
+CXX_FLAGS = -std=c++20 -Ofast
 
-CXXFLAGS = -std=c++17 -Wall -Wextra -Werror
+all: testHash
 
-BINARIES=testStudent testRoster1 testRoster2 testRoster3
-
-all: ${BINARIES}
-
-testStudent: testStudent.o Student.o tddFuncs.o
+testHash: MHashMap.o main.cpp
 	${CXX} $^ -o $@
 
-testRoster1: testRoster1.o Roster.o Student.o tddFuncs.o
-	${CXX} $^ -o $@
-
-testRoster2: testRoster2.o Roster.o Student.o tddFuncs.o
-	${CXX} $^ -o $@
-
-testRoster3: testRoster3.o Roster.o Student.o tddFuncs.o
-	${CXX} $^ -o $@
-
-tests: ${BINARIES}
-	./testStudent
-	./testRoster1
-	./testRoster2
-	./testRoster3
+MHashMap.o: MHashMap.h MHashMap.cpp
+	g++ -c $(CXX_FLAGS) MHashMap.cpp
 
 clean:
-	/bin/rm -f ${BINARIES} *.o
+	rm -f *.o
+	rm -f testHash
