@@ -34,8 +34,8 @@ MHashMap::MHashMap(bool Prime, int NI, int nI, int cI, int kI){
 		for(int i=0; i<k; i++){
 			a.push_back(uniform_distA(mt));
 			b.push_back(uniform_distB(mt));
-			cout << "a of " << i << " is " << a[i] << endl;
-			cout << "b of " << i << " is " << b[i] << endl;
+			//cout << "a of " << i << " is " << a[i] << endl;
+			//cout << "b of " << i << " is " << b[i] << endl;
 		}
 	}
 	else{
