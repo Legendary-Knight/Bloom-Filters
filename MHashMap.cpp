@@ -25,10 +25,10 @@ MHashMap::MHashMap(bool Prime, int NI, int nI, int cI, int kI){
 		hashTable[i]=false;
 	}
 	mt19937 mt(time(nullptr));
-	cout << "made hash table" <<endl;
+	//cout << "made hash table" <<endl;
 	if(Prime){
 		p=pow(2,31)-1;
-		cout << "Prime num is " << p << endl;
+		//cout << "Prime num is " << p << endl;
 		std::uniform_int_distribution<> uniform_distB(0, p-1);
 		std::uniform_int_distribution<> uniform_distA(1, p-1);			
 		for(int i=0; i<k; i++){
@@ -39,21 +39,20 @@ MHashMap::MHashMap(bool Prime, int NI, int nI, int cI, int kI){
 		}
 	}
 	else{
-		cout << "in non prime hash" << endl;
+		//cout << "in non prime hash" << endl;
 		for(int i=0; i<k; i++){
 			int newSeed=mt();
-			cout << "new seed " << newSeed << endl;
+			//cout << "new seed " << newSeed << endl;
 			SEED.push_back(newSeed);
 		}
 	}
 }
 
 void MHashMap::mapVal(int x){
-	cout << "mapping value " << x << endl;
 	if(prime){
 		for(int i=0; i<k; i++){
 			long sum=(((long)(a[i])*x)+b[i]);
-			cout <<"sum " << sum << endl;
+			//cout <<"sum " << sum << endl;
 			int h=((int)(sum%(p)))%(m);
 			hashTable[h]=true;
 		}
@@ -61,12 +60,39 @@ void MHashMap::mapVal(int x){
 	else{
 		for(int i=0; i<k; i++){
 			unsigned int combSeed=(SEED[i]+x);
-			cout << "combined seed " << combSeed << endl;
+			//cout << "combined seed " << combSeed << endl;
 			std::mt19937 gen(combSeed);
 			std::uniform_int_distribution<> uniform_distM(0, m-1);
 			int h=uniform_distM(gen);
 			hashTable[h]=true;
 		}
 	}
+}
+
+bool MHashMap::contains(int x){
+	bool contain = true;
+	if(prime){
+		for(int i=0; i<k; i++){
+			long sum=(((long)(a[i])*x)+b[i]);
+			//cout <<"sum " << sum << endl;
+			int h=((int)(sum%(p)))%(m);
+			if(hashTable[h]==false){
+				contain=false;
+			}
+		}
+	}
+	else{
+		for(int i=0; i<k; i++){
+			unsigned int combSeed=(SEED[i]+x);
+			//cout << "combined seed " << combSeed << endl;
+			std::mt19937 gen(combSeed);
+			std::uniform_int_distribution<> uniform_distM(0, m-1);
+			int h=uniform_distM(gen);
+			if(hashTable[h]==false){
+				contain=false;
+			}
+		}
+	}
+	return contain;
 }
 

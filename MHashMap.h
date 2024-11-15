@@ -11,7 +11,8 @@ class MHashMap {
 	public:
 		//MHashMap(){};
 		MHashMap(bool Prime, int NI, int nI, int cI, int kI);
-		void mapVal(int val);
+		void mapVal(int x);
+		bool contains(int x);
 
 	private:
 		// N will be (2^31)-2
