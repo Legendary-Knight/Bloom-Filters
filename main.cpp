@@ -8,6 +8,7 @@
 #include <cmath>
 #include <random>
 #include <algorithm>
+#include <chrono>
 
 #include "MHashMap.h"
 using namespace std;
@@ -41,10 +42,11 @@ int main(){
 	}
 	*/
 
-	// N will be (2^31)-2
-	int N=(pow(2,31))-2;
-	//n is 500,000
-	int n=500000;
+	int N=(pow(10,7));
+	//n is 50,000
+	int n=50000;
+	bool prime=true;
+	//test
 	// c  will range from 5-10
 	//k will range from 3-7
 	//int c=5;
@@ -52,21 +54,24 @@ int main(){
 
 	//run twice and change from true to false
 /*
-	MHashMap myHash(true, N, n, 5, 3);
-	for(int i=0; i<50000; i++){
-		myHash.mapVal(i);
-	}
-	vector<double> fps;
-	int fp=0;
-	for(int i=0; i<100000; i++){
-		if (myHash.contains(i)){
+	MHashMap myHashT(true, N, n, 5, 3);
+	int y=n-1;
+	
+	for(int i=0; i<n; i++){
+					myHashT.mapVal(y);
+			}
+	for(int i=0; i<2*n; i++){
+		if (myHashT.contains(i)){
 			cout << "contains " << i << endl;
 		}
+		else {
+			cout << "doesn't contain " << i << endl;
+		}		
 	}
-*/
-		
-	
-	bool prime =true;
+	*/
+
+
+
 	for(int c=5; c<=10; c++){
 		for(int k=3; k<=8; k++){
 			vector<double> fps;
@@ -75,17 +80,20 @@ int main(){
 				for(int i=0; i<n; i++){
 					myHash.mapVal(i);
 				}
-				mt19937 mt(time(nullptr)+(rand()*100000));
-				std::uniform_int_distribution<> uniform_dist(n, N-1);
+				//cout << "Fill/spread is "  << myHash.load() << endl;
+				unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+				mt19937 mt((seed+(int)(rand()*10))+it);
+				std::uniform_int_distribution<> uniform_dist(n+1, N-2);
 				double fp=0;
+
 				double inserts=10000;
 				for(int i=0; i<inserts; i++){
-					if (myHash.contains(uniform_dist(mt))){
+					if (myHash.contains((int)(uniform_dist(mt)))){
 						//cout << "a false positive" << endl;
 						fp++;
 					}
 				}
-				double fpr=fp/inserts;
+				double fpr=((double)(fp))/inserts;
 				fps.push_back(fpr);
 				cout << "False positive rate is: " << fpr << " or " << fpr*100 << "%" << endl;
 			}
@@ -94,6 +102,7 @@ int main(){
 			cout<< "MEDIAN false positive rate is: " << medFp << " or " << medFp*100 << "%" << " for c value of: " << c << " and k of: " << k << endl;
 		}
 	}
+
 	
 	return 0;
 }

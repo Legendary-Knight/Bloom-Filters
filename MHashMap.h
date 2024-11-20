@@ -13,11 +13,12 @@ class MHashMap {
 		MHashMap(bool Prime, int NI, int nI, int cI, int kI);
 		void mapVal(int x);
 		bool contains(int x);
+		~MHashMap();
+		double load();
 
 	private:
-		// N will be (2^31)-2
 		int N;
-		//n is 500,000
+		//n is 50,000
 		int n;
 		// c  will range from 5-10
 		//k will range from 3-7

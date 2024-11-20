@@ -7,6 +7,7 @@
 #include <unordered_map> 
 #include <random>
 #include <ctime>
+#include <chrono>
 
 #include "MHashMap.h"
 using namespace std;
@@ -24,13 +25,22 @@ MHashMap::MHashMap(bool Prime, int NI, int nI, int cI, int kI){
 	for(int i=0; i<m; i++){
 		hashTable[i]=false;
 	}
-	mt19937 mt(time(nullptr)+(rand()*100000));
+
+	
+	unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+	mt19937 mt((seed+(int)(rand()*10)));
+
+
 	//cout << "made hash table" <<endl;
 	if(Prime){
-		p=pow(2,31)-1;
+		//p=pow(2,31)-1;	
+		 p=pow(2,31)-1;
+		//p = 1e9+7;
 		//cout << "Prime num is " << p << endl;
+		
+		std::uniform_int_distribution<> uniform_distA(1, p-1);
 		std::uniform_int_distribution<> uniform_distB(0, p-1);
-		std::uniform_int_distribution<> uniform_distA(1, p-1);			
+
 		for(int i=0; i<k; i++){
 			a.push_back(uniform_distA(mt));
 			b.push_back(uniform_distB(mt));
@@ -51,9 +61,22 @@ MHashMap::MHashMap(bool Prime, int NI, int nI, int cI, int kI){
 void MHashMap::mapVal(int x){
 	if(prime){
 		for(int i=0; i<k; i++){
-			long sum=(((long)(a[i])*x)+b[i]);
-			//cout <<"sum " << sum << endl;
-			int h=((int)(sum%(p)))%(m);
+			if(a[i]<=0){
+				cout << "issue with a[i]: "<< a[i] << endl;
+			}
+			long long ax =(((long long)a[i])*(long long)x);
+			if(ax<0){
+				cout << "issue with ax:" << ax << " and a[i] is " << a[i] << " and x is " << x << endl;
+			}
+			if(((ax)%p)+b[i]<0){
+				cout << "overflow ax+b" << endl;
+			}
+			long sum=(((ax)%p)+b[i])%p;
+			if(sum<0){
+				cout <<"sum " << sum << endl;
+			}
+			int h=(int)(sum%m);
+			
 			hashTable[h]=true;
 		}
 	}
@@ -73,9 +96,21 @@ bool MHashMap::contains(int x){
 	bool contain = true;
 	if(prime){
 		for(int i=0; i<k; i++){
-			long sum=(((long)(a[i])*x)+b[i]);
-			//cout <<"sum " << sum << endl;
-			int h=((int)(sum%(p)))%(m);
+			if(a[i]<=0){
+				cout << "issue with a[i]: "<< a[i] << endl;
+			}
+			long long ax =(((long long)a[i])*(long long)x);
+			if(ax<0){
+				cout << "issue with ax:" << ax << " and a[i] is " << a[i] << " and x is " << x << endl;
+			}
+			if(((ax)%p)+b[i]<0){
+				cout << "overflow ax+b" << endl;
+			}
+			long sum=(((ax)%p)+b[i])%p;
+			if(sum<0){
+				cout <<"sum " << sum << endl;
+			}
+			int h=(int)(sum%m);
 			if(hashTable[h]==false){
 				contain=false;
 			}
@@ -96,3 +131,16 @@ bool MHashMap::contains(int x){
 	return contain;
 }
 
+double MHashMap::load(){
+	double fill =0;
+	for(int i=0; i<m; i++){
+		if(hashTable[i]){
+			fill++;
+		}
+	}
+	return (fill/m);
+}
+
+MHashMap::~MHashMap() {
+    delete[] hashTable;
+}
