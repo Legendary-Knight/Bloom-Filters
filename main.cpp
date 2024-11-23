@@ -70,12 +70,31 @@ int main(){
 	}
 	*/
 
+// Load Test
+int c=6;
+for(int k=3; k<=8; k+=2){
+	MHashMap myHashP(true, N, n, c, k);
+	MHashMap myHashS(false, N, n, c, k);
+	int x=5000;
+	for(int numInserts=0; numInserts<=c*n; numInserts++){		
+		if(numInserts==0||numInserts==x||numInserts==c*n){
+			cout << "PRIME: Hash Funct k: " << k << " Num Inserts: " << numInserts << " Load Factor: " << myHashP.load() << endl;
+			cout << "SEED:  Hash Funct k: " << k << " Num Inserts: " << numInserts << " Load Factor: " << myHashS.load() << endl;
+			x*=2;
+		}
+		myHashP.mapVal(numInserts);
+		myHashS.mapVal(numInserts);
+	}
+}
 
 
+
+// False positive rate test
+/*
 	for(int c=5; c<=10; c++){
 		for(int k=3; k<=8; k++){
 			vector<double> fps;
-			for(int it=0; it<10; it++){
+			for(int it=0; it<20; it++){
 				MHashMap myHash(prime, N, n, c, k);
 				for(int i=0; i<n; i++){
 					myHash.mapVal(i);
@@ -95,14 +114,14 @@ int main(){
 				}
 				double fpr=((double)(fp))/inserts;
 				fps.push_back(fpr);
-				cout << "False positive rate is: " << fpr << " or " << fpr*100 << "%" << endl;
+				//cout << "False positive rate is: " << fpr << " or " << fpr*100 << "%" << endl;
 			}
 			sort(fps.begin(), fps.end());
-			double medFp = (fps[4]+fps[5])/2;
+			double medFp = (fps[9]+fps[10])/2;
 			cout<< "MEDIAN false positive rate is: " << medFp << " or " << medFp*100 << "%" << " for c value of: " << c << " and k of: " << k << endl;
 		}
 	}
-
+*/
 	
 	return 0;
 }

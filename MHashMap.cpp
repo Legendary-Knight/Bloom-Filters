@@ -135,6 +135,7 @@ double MHashMap::load(){
 	double fill =0;
 	for(int i=0; i<m; i++){
 		if(hashTable[i]){
+			//cout << "at index i there is a true: " << i << endl;
 			fill++;
 		}
 	}
